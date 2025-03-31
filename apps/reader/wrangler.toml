@@ -1,0 +1,30 @@
+name = "readzn-reader"
+compatibility_date = "2023-12-01"
+main = "./.next/server/middleware-manifest.json"
+workers_dev = true
+
+[build]
+command = "npm run build"
+
+[site]
+directory = ".next"
+
+[[routes]]
+pattern = "/.*"
+zone_name = "readzn.com"
+
+[env.production]
+name = "readzn-reader-prod"
+workers_dev = false
+
+[env.staging]
+name = "readzn-reader-staging"
+workers_dev = true
+
+# 配置环境变量
+[vars]
+NEXT_PUBLIC_WEBSITE_URL = "https://readzn.com"
+
+# 开发环境变量
+[env.development.vars]
+NEXT_PUBLIC_WEBSITE_URL = "http://localhost:3000"
