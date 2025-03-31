@@ -1,4 +1,4 @@
-name = "readzn-reader"
+name = "readzn-reader-reader"
 compatibility_date = "2023-12-01"
 main = "./.next/server/middleware-manifest.json"
 workers_dev = true
