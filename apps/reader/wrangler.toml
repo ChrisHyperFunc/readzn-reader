@@ -4,10 +4,10 @@ main = "./.next/server/middleware-manifest.json"
 workers_dev = true
 
 [build]
-command = "npm run build"
+command = "pnpm run build"
 
 [site]
-directory = ".next"
+bucket = ".next"
 
 [[routes]]
 pattern = "/.*"
