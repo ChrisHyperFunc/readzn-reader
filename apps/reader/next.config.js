@@ -37,6 +37,55 @@ const sentryWebpackPluginOptions = {
 const config = {
   pageExtensions: ['ts', 'tsx'],
   webpack(config) {
+    // Enable aggressive code splitting and chunk optimization
+    config.optimization = {
+      ...config.optimization,
+      splitChunks: {
+        chunks: 'all',
+        maxInitialRequests: 25,
+        minSize: 20000,
+        maxSize: 15000000, // 15MB chunk size limit
+        cacheGroups: {
+          default: false,
+          vendors: false,
+          framework: {
+            chunks: 'all',
+            name: 'framework',
+            test: /(?<!node_modules.*)[\\/]node_modules[\\/](@next|react|react-dom|scheduler)[\\/]/,
+            priority: 40,
+            enforce: true,
+          },
+          lib: {
+            test: /[\\/]node_modules[\\/]/,
+            chunks: 'async',
+            name(module, chunks) {
+              const moduleFileName = module
+                .identifier()
+                .split('/')
+                .reduceRight((item) => item);
+              return `lib-${moduleFileName.replace(/\.(js|ts)x?$/, '')}`;
+            },
+            minSize: 10000,
+            maxSize: 15000000,
+            priority: 30,
+          },
+          commons: {
+            name: 'commons',
+            minChunks: 2,
+            priority: 20,
+          },
+        },
+      },
+      runtimeChunk: { name: 'runtime' },
+    }
+
+    // Enable compression and other optimizations
+    config.optimization.minimize = true;
+    config.performance = {
+      maxEntrypointSize: 15000000,
+      maxAssetSize: 15000000,
+    };
+
     return config
   },
   i18n: {
